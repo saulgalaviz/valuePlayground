@@ -2,12 +2,12 @@
 using TestAPI.Data;
 using TestAPI.Models;
 using TestAPI.Models.Dto;
-//Up until the 1:03 min mark for video: https://www.youtube.com/watch?v=_uZYOgzYheU&ab_channel=DotNetMastery
+//Up until the 1:09 min mark for video: https://www.youtube.com/watch?v=_uZYOgzYheU&ab_channel=DotNetMastery
 namespace TestAPI.Controllers
 {
     //[Route("api/[controller]")]
     [Route("api/Values")]
-    [ApiController]
+    [ApiController] //Identifies ValuesDTO as the controller would not pass requirements such as [Required] or [MaxLength(30)], would need to do if(!ModelState.IsValid) instead, etc.
     public class ValuesController : ControllerBase
     {
         [HttpGet]
@@ -47,7 +47,17 @@ namespace TestAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ValuesDTO> CreateVilla([FromBody]ValuesDTO valuesDTO) //[FromBody] added for [HttpPost] commands
         {
-            if(valuesDTO == null)
+            /*if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }*/
+            if(ValueStore.valueList.FirstOrDefault(u => u.Name.ToLower()==valuesDTO.Name.ToLower())!=null)
+            {
+                ModelState.AddModelError("CustomError", "Value already Exists!"); //first value is fine to be blank, must be a custom sort of name though
+                return BadRequest(ModelState);
+            }
+
+            if (valuesDTO == null)
             {
                 return BadRequest(valuesDTO);
             }
