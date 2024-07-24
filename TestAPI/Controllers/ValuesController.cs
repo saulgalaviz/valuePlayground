@@ -46,6 +46,7 @@ namespace TestAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ValuesDTO> CreateVilla([FromBody]ValuesDTO valuesDTO) //[FromBody] added for [HttpPost] commands
+        //ActionResult you can define the return type
         {
             /*if (!ModelState.IsValid)
             {
@@ -73,5 +74,30 @@ namespace TestAPI.Controllers
             return CreatedAtRoute("GetValue", new { id = valuesDTO.Id }, valuesDTO);
 
         }
+
+        [HttpDelete("{id:int}", Name = "DeleteValue")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult DeleteValue(int id)
+        //IActionResult you don't define the return type. Good for when you don't return content 
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            var value = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
+            if (value == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                ValueStore.valueList.Remove(value);
+                return NoContent(); //This one returns no content
+            }
+        }
+
+
     }
 }
