@@ -2,7 +2,7 @@
 using TestAPI.Data;
 using TestAPI.Models;
 using TestAPI.Models.Dto;
-//Up until the 45 min mark for video: https://www.youtube.com/watch?v=_uZYOgzYheU&ab_channel=DotNetMastery
+//Up until the 1:03 min mark for video: https://www.youtube.com/watch?v=_uZYOgzYheU&ab_channel=DotNetMastery
 namespace TestAPI.Controllers
 {
     //[Route("api/[controller]")]
@@ -17,7 +17,7 @@ namespace TestAPI.Controllers
             return Ok(ValueStore.valueList);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "GetValue")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -42,7 +42,7 @@ namespace TestAPI.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ValuesDTO> CreateVilla([FromBody]ValuesDTO valuesDTO) //[FromBody] added for [HttpPost] commands
@@ -51,15 +51,16 @@ namespace TestAPI.Controllers
             {
                 return BadRequest(valuesDTO);
             }
-            if(valuesDTO.Id < 0)
+            if(valuesDTO.Id > 0)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            //Get maximum ID
+            //Get maximum ID and add 1
             valuesDTO.Id = ValueStore.valueList.OrderByDescending(u => u.Id).FirstOrDefault().Id+1;
             ValueStore.valueList.Add(valuesDTO);
 
-            return (Ok(valuesDTO));
+            //return (Ok(valuesDTO));
+            return CreatedAtRoute("GetValue", new { id = valuesDTO.Id }, valuesDTO);
 
         }
     }
