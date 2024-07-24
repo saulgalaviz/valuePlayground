@@ -11,12 +11,21 @@ namespace TestAPI.Controllers
     public class ValuesController : ControllerBase
     {
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<ValuesDTO>> GetTests()
         {
             return Ok(ValueStore.valueList);
         }
 
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        //Integer way of writing it, but above is more clear when reading. Also, Type is the return type of the response but we don't need if we define it with <ValuesDTO>
+        //[ProducesResponseType(200, Type = typeof(ValuesDTO))]
+        //[ProducesResponseType(404)]
+        //[ProducesResponseType(400)]
+
         public ActionResult<ValuesDTO> GetTest(int id)
         {
             if (id == 0)
@@ -30,6 +39,28 @@ namespace TestAPI.Controllers
             }
 
             return Ok(values);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<ValuesDTO> CreateVilla([FromBody]ValuesDTO valuesDTO) //[FromBody] added for [HttpPost] commands
+        {
+            if(valuesDTO == null)
+            {
+                return BadRequest(valuesDTO);
+            }
+            if(valuesDTO.Id < 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            //Get maximum ID
+            valuesDTO.Id = ValueStore.valueList.OrderByDescending(u => u.Id).FirstOrDefault().Id+1;
+            ValueStore.valueList.Add(valuesDTO);
+
+            return (Ok(valuesDTO));
+
         }
     }
 }
