@@ -2,7 +2,7 @@
 using TestAPI.Data;
 using TestAPI.Models;
 using TestAPI.Models.Dto;
-//Up until the 35 min mark for video: https://www.youtube.com/watch?v=_uZYOgzYheU&ab_channel=DotNetMastery
+//Up until the 45 min mark for video: https://www.youtube.com/watch?v=_uZYOgzYheU&ab_channel=DotNetMastery
 namespace TestAPI.Controllers
 {
     //[Route("api/[controller]")]
@@ -11,15 +11,25 @@ namespace TestAPI.Controllers
     public class ValuesController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<ValuesDTO> GetTests()
+        public ActionResult<IEnumerable<ValuesDTO>> GetTests()
         {
-            return ValueStore.valueList;
+            return Ok(ValueStore.valueList);
         }
 
         [HttpGet("{id:int}")]
-        public ValuesDTO GetTest(int id)
+        public ActionResult<ValuesDTO> GetTest(int id)
         {
-            return ValueStore.valueList.FirstOrDefault(u=>u.Id==id);
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            var values = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
+            if(values == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(values);
         }
     }
 }
