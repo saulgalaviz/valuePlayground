@@ -11,11 +11,20 @@ namespace TestAPI.Controllers
     [ApiController] //Identifies ValuesDTO as the controller would not pass requirements such as [Required] or [MaxLength(30)], would need to do if(!ModelState.IsValid) instead, etc.
     public class ValuesController : ControllerBase
     {
+        //Dependency injection below 3 lines of code for logging
+        private readonly ILogger<ValuesController> _logger;
+
+        public ValuesController(ILogger<ValuesController> logger)
+        {
+            _logger = logger;
+        }
+
         //Gets all values from database
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<ValuesDTO>> GetTests()
         {
+            _logger.LogInformation("Getting all values.");
             return Ok(ValueStore.valueList);
         }
 
@@ -33,6 +42,7 @@ namespace TestAPI.Controllers
         {
             if (id == 0)
             {
+                _logger.LogError("Get Value Error with ID " +  id);
                 return BadRequest();
             }
             var values = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
