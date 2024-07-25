@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TestAPI.Data;
+using TestAPI.Logging;
 using TestAPI.Models;
 using TestAPI.Models.Dto;
 //Up until the 1:23:50 min mark for video: https://www.youtube.com/watch?v=_uZYOgzYheU&ab_channel=DotNetMastery
@@ -12,10 +13,17 @@ namespace TestAPI.Controllers
     public class ValuesController : ControllerBase
     {
         //Dependency injection below 3 lines of code for logging
-        private readonly ILogger<ValuesController> _logger;
+        //private readonly ILogger<ValuesController> _logger;
 
-        public ValuesController(ILogger<ValuesController> logger)
+        /*public ValuesController(ILogger<ValuesController> logger)
         {
+            _logger = logger;
+        }*/
+
+        //custom logging built using own interface and class
+        private readonly ILogging _logger;
+        public ValuesController(ILogging logger)
+        { 
             _logger = logger;
         }
 
@@ -24,7 +32,9 @@ namespace TestAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<ValuesDTO>> GetTests()
         {
-            _logger.LogInformation("Getting all values.");
+            //used with serilog
+            //_logger.LogInformation("Getting all values.");
+            _logger.Log("Getting all values.", "");
             return Ok(ValueStore.valueList);
         }
 
@@ -42,7 +52,7 @@ namespace TestAPI.Controllers
         {
             if (id == 0)
             {
-                _logger.LogError("Get Value Error with ID " +  id);
+                _logger.Log("Get Value Error with ID " +  id, "error");
                 return BadRequest();
             }
             var values = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
