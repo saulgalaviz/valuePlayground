@@ -30,7 +30,7 @@ namespace TestAPI.Controllers
         //Gets all values from database
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<ValuesDTO>> GetTests()
+        public ActionResult<IEnumerable<ValuesDTO>> GetValues()
         {
             //used with serilog
             //_logger.LogInformation("Getting all values.");
@@ -48,7 +48,7 @@ namespace TestAPI.Controllers
         //[ProducesResponseType(200, Type = typeof(ValuesDTO))]
         //[ProducesResponseType(404)]
         //[ProducesResponseType(400)]
-        public ActionResult<ValuesDTO> GetTest(int id)
+        public ActionResult<ValuesDTO> GetValue(int id)
         {
             if (id == 0)
             {
@@ -69,7 +69,7 @@ namespace TestAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<ValuesDTO> CreateVilla([FromBody] ValuesDTO valuesDTO) //[FromBody] added for [HttpPost] commands
+        public ActionResult<ValuesDTO> CreateValue([FromBody] ValuesDTO valuesDTO) //[FromBody] added for [HttpPost] commands
         //ActionResult you can define the return type
         {
             /*if (!ModelState.IsValid)
