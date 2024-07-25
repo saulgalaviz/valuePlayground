@@ -1,6 +1,15 @@
+using Serilog; //Packages installed for serilog.aspnetcore and serilog.sinks.file for this solution
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//Part of serilog. Here, we can set minimum level of logging to several options, warning, error, debugging, etc. Can add paramter to set length of logging to minute, hour, day etc (not needed).
+Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
+    .WriteTo.File("log/valueLogs.txt", rollingInterval: RollingInterval.Day).CreateLogger();
+
+//Tell builder to not use default logging and instead to use Serilog
+builder.Host.UseSerilog();
 
 //installed both Microsoft.ASPNetCore.JsonPatch and Microsoft.ASPNetCore.MVC.newtonsoftjson
 //builder.Services.AddControllers() previously, but added .AddNewtonsoftJson to add patching, a separate package I installed.
