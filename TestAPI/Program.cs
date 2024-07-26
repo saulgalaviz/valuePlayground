@@ -1,5 +1,7 @@
 //using Serilog; //Packages installed for serilog.aspnetcore and serilog.sinks.file for this solution
 
+using Microsoft.EntityFrameworkCore;
+using TestAPI.Data;
 using TestAPI.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 //Tell builder to not use default logging and instead to use Serilog
 //builder.Host.UseSerilog();
 
+//Setup database connection using helper method from appsetting.json we created
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
+});
 //installed both Microsoft.ASPNetCore.JsonPatch and Microsoft.ASPNetCore.MVC.newtonsoftjson
 //builder.Services.AddControllers() previously, but added .AddNewtonsoftJson to add patching, a separate package I installed.
 builder.Services.AddControllers(option =>

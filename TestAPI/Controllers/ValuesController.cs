@@ -4,7 +4,7 @@ using TestAPI.Data;
 using TestAPI.Logging;
 using TestAPI.Models;
 using TestAPI.Models.Dto;
-//Up until the 1:23:50 min mark for video: https://www.youtube.com/watch?v=_uZYOgzYheU&ab_channel=DotNetMastery
+//Up until the 2:09 min mark for video: https://www.youtube.com/watch?v=_uZYOgzYheU&ab_channel=DotNetMastery
 namespace TestAPI.Controllers
 {
     //[Route("api/[controller]")]
@@ -23,7 +23,7 @@ namespace TestAPI.Controllers
         //custom logging built using own interface and class
         private readonly ILogging _logger;
         public ValuesController(ILogging logger)
-        { 
+        {
             _logger = logger;
         }
 
