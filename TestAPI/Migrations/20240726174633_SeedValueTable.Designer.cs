@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestAPI.Data;
 
@@ -11,9 +12,11 @@ using TestAPI.Data;
 namespace TestAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240726174633_SeedValueTable")]
+    partial class SeedValueTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +73,7 @@ namespace TestAPI.Migrations
                         {
                             Id = 1,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 7, 26, 10, 48, 49, 561, DateTimeKind.Local).AddTicks(5178),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem dolor, hendrerit ut justo sit amet, dictum facilisis magna. Nullam pulvinar tempus leo, sit amet dapibus nisi convallis et. Pellentesque sodales vestibulum quam quis laoreet. Aenean rhoncus est nec consectetur.",
                             ImageUrl = "https://whvn.cc/47y633",
                             Name = "Lagoon",
@@ -83,7 +86,7 @@ namespace TestAPI.Migrations
                         {
                             Id = 2,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 7, 26, 10, 48, 49, 581, DateTimeKind.Local).AddTicks(3270),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Phasellus tempor sapien vitae ullamcorper gravida. Aenean eget pulvinar risus. Cras molestie ligula nibh. Sed luctus condimentum leo, nec tristique tellus vulputate id. Duis semper lorem sed lacus iaculis, ac fringilla mi vestibulum. Cras vel nunc mollis, sagittis nunc ac.",
                             ImageUrl = "https://whvn.cc/47y633",
                             Name = "Park",
@@ -96,7 +99,7 @@ namespace TestAPI.Migrations
                         {
                             Id = 3,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 7, 26, 10, 48, 49, 581, DateTimeKind.Local).AddTicks(3290),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Nullam bibendum lorem sed augue accumsan tempus. Ut quis bibendum eros, at malesuada odio. Duis congue dolor tincidunt orci sodales, id sagittis ante ultrices. Vivamus dapibus magna vel mi malesuada varius. Morbi volutpat eu metus dictum pretium. Proin quis tellus.",
                             ImageUrl = "https://whvn.cc/47y633",
                             Name = "Vegas Room",
@@ -109,7 +112,7 @@ namespace TestAPI.Migrations
                         {
                             Id = 4,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 7, 26, 10, 48, 49, 581, DateTimeKind.Local).AddTicks(3293),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Morbi mattis dolor mattis, faucibus quam sit amet, vestibulum orci. Quisque congue purus non ligula condimentum, at iaculis tellus faucibus. Proin eu diam sit amet diam finibus feugiat et vitae nisi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed.",
                             ImageUrl = "https://whvn.cc/47y633",
                             Name = "Maui Island Resort",
@@ -122,7 +125,7 @@ namespace TestAPI.Migrations
                         {
                             Id = 5,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 7, 26, 10, 48, 49, 581, DateTimeKind.Local).AddTicks(3295),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "In quis mattis erat. Mauris pellentesque diam eu volutpat sagittis. Mauris ullamcorper, elit id consectetur euismod, lacus mauris tincidunt massa, ac rhoncus risus lorem eget lectus. Aliquam erat volutpat. Maecenas efficitur, nulla nec volutpat congue, magna justo interdum nulla, at.",
                             ImageUrl = "https://whvn.cc/47y633",
                             Name = "Detroit Condo",

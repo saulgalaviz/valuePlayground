@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 //created within tools /Nuget/ Package Manager Console and then inputting add-migration AddValueTable into console
-//Afterwards, we do a update-database with SQL database to get it updated
+//Afterwards, we do a update-database with SQL database to get it updated after making changes in code. Only new changes will be applied to database after first time it is worked (regarding migration within entityframework core).
+//Allows us to not touch database to make changes as database changes are applied via code
 namespace TestAPI.Migrations
 {
     /// <inheritdoc />
