@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TestAPI.Data;
 using TestAPI.Logging;
 using TestAPI.Models;
@@ -22,17 +23,18 @@ namespace TestAPI.Controllers
 
         //custom logging built using own interface and class
         private readonly ILogging _logger;
-        public ValuesController(ILogging logger)
+        /*public ValuesController(ILogging logger)
         {
             _logger = logger;
-        }
+        }*/
 
         //Extract database service we registered within Program.cs and here we use dependency injection to utilize database
         private readonly ApplicationDbContext _db;
 
-        public ValuesController(ApplicationDbContext db)
+        public ValuesController(ApplicationDbContext db, ILogging logger)
         {
             _db = db;
+            _logger = logger;
         }
 
         //Gets all values from database
@@ -196,7 +198,8 @@ namespace TestAPI.Controllers
                 return BadRequest();
             }
             //var value = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
-            var value = _db.Values.FirstOrDefault(u => u.Id == id); //will need to convert this value object into ValueDTO
+            //when below line is executed, entity framework core tracks the value which isn't optimal when working with multiple values - since we created 2 values they would both be referenced when updating database with one of the values - we prevent that by including .asNoTracking() 
+            var value = _db.Values.AsNoTracking().FirstOrDefault(u => u.Id == id); //will need to convert this value object into ValueDTO
 
             ValuesDTO valueDTO = new()
             {
