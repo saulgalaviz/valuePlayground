@@ -27,6 +27,14 @@ namespace TestAPI.Controllers
             _logger = logger;
         }
 
+        //Extract database service we registered within Program.cs and here we use dependency injection to utilize database
+        private readonly ApplicationDbContext _db;
+
+        public ValuesController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
         //Gets all values from database
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,7 +43,8 @@ namespace TestAPI.Controllers
             //used with serilog
             //_logger.LogInformation("Getting all values.");
             _logger.Log("Getting all values.", "");
-            return Ok(ValueStore.valueList);
+            //return Ok(ValueStore.valueList);  this used with runtime storage class
+            return Ok(_db.Values.ToList());
         }
 
         //Gets one value based on integer value
@@ -55,7 +64,8 @@ namespace TestAPI.Controllers
                 _logger.Log("Get Value Error with ID " +  id, "error");
                 return BadRequest();
             }
-            var values = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
+            //var values = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
+            var values = _db.Values.FirstOrDefault(u => u.Id == id);
             if (values == null)
             {
                 return NotFound();
@@ -76,7 +86,7 @@ namespace TestAPI.Controllers
             {
                 return BadRequest(ModelState);
             }*/
-            if (ValueStore.valueList.FirstOrDefault(u => u.Name.ToLower() == valuesDTO.Name.ToLower()) != null)
+            if (_db.Values.FirstOrDefault(u => u.Name.ToLower() == valuesDTO.Name.ToLower()) != null) //ValueStore.valueList.FirstOrDefault(u => u.Name.ToLower() == valuesDTO.Name.ToLower()) != null
             {
                 ModelState.AddModelError("CustomError", "Value already Exists!"); //first value is fine to be blank, must be a custom sort of name though
                 return BadRequest(ModelState);
@@ -91,8 +101,25 @@ namespace TestAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
             //Get maximum ID and add 1
-            valuesDTO.Id = ValueStore.valueList.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
-            ValueStore.valueList.Add(valuesDTO);
+            //valuesDTO.Id = ValueStore.valueList.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
+            //ID is an identity column in Entity framework core, so above line not needed
+
+            //ValueStore.valueList.Add(valuesDTO); if we try to switch this to database, we need to manually convert since this cannot convert database value to valueDTO
+            //_db.Values.Add(valuesDTO);
+            //instead we use this
+            Value model = new()
+            {
+                Amenity = valuesDTO.Amenity,
+                Details = valuesDTO.Details,
+                Id = valuesDTO.Id,
+                ImageUrl = valuesDTO.ImageUrl,
+                Name = valuesDTO.Name,
+                Occupancy = valuesDTO.Occupancy,
+                Rate = valuesDTO.Rate,
+                Sqft = valuesDTO.Sqft,
+            };
+            _db.Values.Add(model);
+            _db.SaveChanges(); //saves changes into database
 
             //return (Ok(valuesDTO));
             return CreatedAtRoute("GetValue", new { id = valuesDTO.Id }, valuesDTO);
@@ -111,14 +138,17 @@ namespace TestAPI.Controllers
             {
                 return BadRequest();
             }
-            var value = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
+            //var value = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
+            var value = _db.Values.FirstOrDefault(u => u.Id == id);
             if (value == null)
             {
                 return NotFound();
             }
             else
             {
-                ValueStore.valueList.Remove(value);
+                //ValueStore.valueList.Remove(value);
+                _db.Values.Remove(value);
+                _db.SaveChanges();
                 return NoContent(); //This one returns no content
             }
         }
@@ -133,10 +163,24 @@ namespace TestAPI.Controllers
             {
                 return BadRequest();
             }
-            var value = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
-            value.Name = valueDTO.Name;
-            value.Sqft = valueDTO.Sqft;
-            value.Occupancy = valueDTO.Occupancy;
+            //Entity framework core just needs ID and can update all values at once, just need to convert ValueDTO to Value object 
+            //var value = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
+            //value.Name = valueDTO.Name;
+            //value.Sqft = valueDTO.Sqft;
+            //value.Occupancy = valueDTO.Occupancy;
+            Value model = new()
+            {
+                Amenity = valueDTO.Amenity,
+                Details = valueDTO.Details,
+                Id = valueDTO.Id,
+                ImageUrl = valueDTO.ImageUrl,
+                Name = valueDTO.Name,
+                Occupancy = valueDTO.Occupancy,
+                Rate = valueDTO.Rate,
+                Sqft = valueDTO.Sqft,
+            };
+            _db.Values.Update(model);
+            _db.SaveChanges();
 
             return NoContent();
         }
@@ -151,13 +195,41 @@ namespace TestAPI.Controllers
             {
                 return BadRequest();
             }
-            var value = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
+            //var value = ValueStore.valueList.FirstOrDefault(u => u.Id == id);
+            var value = _db.Values.FirstOrDefault(u => u.Id == id); //will need to convert this value object into ValueDTO
 
-            if(value == null)
+            ValuesDTO valueDTO = new()
+            {
+                Amenity = value.Amenity,
+                Details = value.Details,
+                Id = value.Id,
+                ImageUrl = value.ImageUrl,
+                Name = value.Name,
+                Occupancy = value.Occupancy,
+                Rate = value.Rate,
+                Sqft = value.Sqft,
+            };
+
+            if (value == null)
             {
                 return BadRequest();
             }
-            patchDTO.ApplyTo(value, ModelState);
+            patchDTO.ApplyTo(valueDTO, ModelState); //for database, record here is updated for DTO but now it needs to be converted to type Value to be updated in database as shown below
+            Value model = new Value()
+            {
+                Amenity = valueDTO.Amenity,
+                Details = valueDTO.Details,
+                Id = valueDTO.Id,
+                ImageUrl = valueDTO.ImageUrl,
+                Name = valueDTO.Name,
+                Occupancy = valueDTO.Occupancy,
+                Rate = valueDTO.Rate,
+                Sqft = valueDTO.Sqft,
+            };
+
+            _db.Values.Update(model); //this would update entire record for the only single patch field, but if we really needed to, we would go into stored prog - create a stored prog to update one record and if it had many columns figure it out
+            _db.SaveChanges();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

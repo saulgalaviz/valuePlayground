@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Host.UseSerilog();
 
 //Setup database connection using helper method from appsetting.json we created
+//This registers the service within our container
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
