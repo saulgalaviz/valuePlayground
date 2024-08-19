@@ -1,27 +1,45 @@
 # Value Playground
 
-Extracurricular solo project.
+Extracurricular solo project creating CRUD API functionality utilizing ASP.NET Core and SQL server, using Entity Framework Core as the ORM bridge between both.
  
 -----------------------------------------------------------------------------------------------  
 
-Concepts: Agile SWDLC, Augmented Reality
+Concepts: RESTful API, SQL Server
 
-Tools: Unity3D, Vuforia SDK, GitHub
+Tools: Entity Framework Core, GitHub
 
 Languages: C#
 
 # Demo
-# First screen when application is opened.
-![alt text](https://i.imgur.com/m5NU1mA.png)
+# Swagger interface displaying API operations.
+![alt text](https://imgur.com/yDJukgI)
 
-# Working your way around the application with interactive buttons.
-![alt text](https://i.imgur.com/XKBtOXk.jpg)
+# SQL Server displaying current values in table.
+![alt text](https://imgur.com/CyLGkK0)
 
-# First shirt displayed over QR code!
-![alt text](https://i.imgur.com/AgJIKke.png)
+# Executing GET API to pull all values.
+![alt text](https://imgur.com/WxYF47p)
 
-# Tapping on top portion of QR code changes shirts.
-![alt text](https://i.imgur.com/GPPBWAq.png)
+# Executing POST API to construct our Demo Land!
+![alt text](https://imgur.com/MN0TTx3)
 
-# Holding the QR code over your body will have you wearing the shirt!
-![alt text](https://i.imgur.com/pZG0y8z.png)
+# Executing second GET API requiring unique ID to pull details of created Demo Land.
+![alt text](https://imgur.com/cMDXXrK)
+
+# Executing PUT API to update some of our values for Demo Land. We're upgrading amenities, imageURL, and rate!
+![alt text](https://imgur.com/8SqrRIF)
+
+# Executing second GET API to confirm values were updated.
+![alt text](https://imgur.com/p6wjfha)
+
+# Executing PATCH API to update the name from Demo Land to Demo World. The new name fits the upgraded amenities.
+![alt text](https://imgur.com/qoXKgv2)
+
+# Executing second GET API to confirm name was updated.
+![alt text](https://imgur.com/4Md2SEi)
+
+# Executing DELETE API to delete Demo World. Tourists wanted to experience real experiences and not demos of real amenities.
+![alt text](https://imgur.com/QHgdeOj)
+
+# Executing second GET API to our demo creation was deleted.
+![alt text](https://imgur.com/SiY8bvH)
