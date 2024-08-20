@@ -6,7 +6,7 @@ Extracurricular solo project creating CRUD API functionality utilizing ASP.NET C
 
 Concepts: RESTful API, SQL Server
 
-Tools: Entity Framework Core, GitHub
+Tools: Entity Framework Core, GitHub, Visual Studio 2022
 
 Languages: C#
 
