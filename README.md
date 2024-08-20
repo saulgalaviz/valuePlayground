@@ -1,6 +1,6 @@
 # Value Playground
 
-Extracurricular solo project creating CRUD API functionality utilizing ASP.NET Core and SQL server, using Entity Framework Core as the ORM bridge between both.
+Backend extracurricular project creating CRUD API functionality utilizing ASP.NET Core and SQL server, using Entity Framework Core as the ORM bridge between both.
  
 -----------------------------------------------------------------------------------------------  
 
