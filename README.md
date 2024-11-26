@@ -4,7 +4,7 @@ Backend extracurricular project creating CRUD API functionality utilizing ASP.NE
  
 -----------------------------------------------------------------------------------------------  
 
-Concepts: RESTful API, SQL Server
+Concepts: RESTful API, Microsoft SQL Server
 
 Tools: Entity Framework Core, GitHub, Visual Studio 2022
 
